@@ -1,0 +1,18 @@
+# MCP SDK
+mcp>=0.9.0
+
+# HTTP server for SSE transport
+aiohttp>=3.9.0
+starlette>=0.35.0
+uvicorn>=0.25.0
+
+# HTTP client for remote access
+httpx>=0.25.0
+
+# LangGraph integration (optional - install separately if needed)
+langgraph>=0.1.0
+langchain-core>=0.2.0
+langchain-openai>=0.1.0
+
+# Utilities
+python-dotenv>=1.0.0
