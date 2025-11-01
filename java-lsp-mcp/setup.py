@@ -2,7 +2,7 @@
 Setup script for Java Error Checker MCP Service
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 from pathlib import Path
 
 # Read the README file
