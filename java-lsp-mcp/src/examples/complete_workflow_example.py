@@ -215,9 +215,9 @@ async def demonstrate_subgraphs():
         }
     )
     
-    result = await codegen.execute(input_state)
-    print(f"   Status: {result.status.value}")
-    print(f"   Generated code preview: {result.output_data.get('generated_code', '')[:100]}...")
+    result_dict = await codegen.execute(input_state)
+    print(f"   Status: {result_dict['status'].value}")
+    print(f"   Generated code preview: {result_dict['output_data'].get('generated_code', '')[:100]}...")
     
     print("\n2. Executing Error Checking Subgraph:")
     error_checker = ErrorCheckingSubgraph(name="demo_error_checker", auto_register=False)
@@ -229,9 +229,9 @@ async def demonstrate_subgraphs():
         }
     )
     
-    result = await error_checker.execute(input_state)
-    print(f"   Status: {result.status.value}")
-    print(f"   Errors found: {result.output_data.get('error_count', 0)}")
+    result_dict = await error_checker.execute(input_state)
+    print(f"   Status: {result_dict['status'].value}")
+    print(f"   Errors found: {result_dict['output_data'].get('error_count', 0)}")
     
     print("\n3. Creating custom subgraph from template:")
     
@@ -251,9 +251,9 @@ async def demonstrate_subgraphs():
     )
     
     input_state = SubgraphState(subgraph_name="custom_validator")
-    result = await custom_subgraph.execute(input_state)
-    print(f"   Custom subgraph status: {result.status.value}")
-    print(f"   Output: {result.output_data}")
+    result_dict = await custom_subgraph.execute(input_state)
+    print(f"   Custom subgraph status: {result_dict['status'].value}")
+    print(f"   Output: {result_dict['output_data']}")
 
 
 async def demonstrate_orchestrator():
@@ -322,13 +322,13 @@ async def demonstrate_orchestrator():
     graph = orchestrator.build_graph()
     compiled_graph = graph.compile()
     
-    result = await compiled_graph.ainvoke(initial_state)
+    result_dict = await compiled_graph.ainvoke(initial_state)
     
     print(f"\n3. Workflow Results:")
-    print(f"   Status: {result.status.value}")
-    print(f"   Completed tasks: {len(result.completed_tasks)}")
-    print(f"   Failed tasks: {len(result.failed_tasks)}")
-    print(f"   Errors: {len(result.errors)}")
+    print(f"   Status: {result_dict['status'].value}")
+    print(f"   Completed tasks: {len(result_dict['completed_tasks'])}")
+    print(f"   Failed tasks: {len(result_dict['failed_tasks'])}")
+    print(f"   Errors: {len(result_dict['errors'])}")
     
     print("\n4. Execution Statistics:")
     stats = orchestrator.get_execution_stats()

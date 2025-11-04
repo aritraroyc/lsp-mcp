@@ -5,7 +5,7 @@ Enables A2A communication for subgraphs using HTTP/gRPC protocols
 with service discovery support.
 """
 
-from typing import Any, Dict, Optional, Set, List
+from typing import Any, Dict, Optional, Set, List, TYPE_CHECKING
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime
@@ -16,9 +16,20 @@ import json
 try:
     import aiohttp
     from aiohttp import web
+    AIOHTTP_AVAILABLE = True
 except ImportError:
     aiohttp = None
     web = None
+    AIOHTTP_AVAILABLE = False
+
+if TYPE_CHECKING:
+    # Only import for type checking, not at runtime
+    if not AIOHTTP_AVAILABLE:
+        from typing import Any as WebRequest
+        from typing import Any as WebResponse
+    else:
+        from aiohttp.web import Request as WebRequest
+        from aiohttp.web import Response as WebResponse
 
 from ..registry import SubgraphMetadata, SubgraphCapability, get_global_registry
 from ..subgraphs import SubgraphState, SubgraphStatus
@@ -229,7 +240,7 @@ class A2AHttpServer:
         self.app.router.add_post("/execute/{subgraph_name}", self._execute_handler)
         self.app.router.add_get("/stats", self._stats_handler)
     
-    async def _health_handler(self, request: web.Request) -> web.Response:
+    async def _health_handler(self, request) -> Any:
         """Health check endpoint."""
         return web.json_response({
             "status": "healthy",
@@ -237,7 +248,7 @@ class A2AHttpServer:
             "timestamp": datetime.now().isoformat()
         })
     
-    async def _list_subgraphs_handler(self, request: web.Request) -> web.Response:
+    async def _list_subgraphs_handler(self, request) -> Any:
         """List available subgraphs."""
         subgraphs = self.registry.list_all()
         
@@ -258,7 +269,7 @@ class A2AHttpServer:
             "total": len(subgraph_list)
         })
     
-    async def _execute_handler(self, request: web.Request) -> web.Response:
+    async def _execute_handler(self, request) -> Any:
         """Execute a subgraph."""
         subgraph_name = request.match_info['subgraph_name']
         
@@ -327,7 +338,7 @@ class A2AHttpServer:
             # Decrement active counter
             self.registry.decrement_active(subgraph_name)
     
-    async def _stats_handler(self, request: web.Request) -> web.Response:
+    async def _stats_handler(self, request) -> Any:
         """Get server statistics."""
         stats = self.registry.get_stats()
         return web.json_response(stats)
