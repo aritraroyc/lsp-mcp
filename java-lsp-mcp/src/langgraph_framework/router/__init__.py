@@ -5,7 +5,7 @@ Implements intelligent routing of tasks to appropriate subgraphs based on
 capabilities, context, and scoring mechanisms.
 """
 
-from typing import Dict, List, Optional, Set, Any
+from typing import Dict, List, Optional, Set, Any, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -64,7 +64,7 @@ class RoutingDecision:
     selected_subgraph: Optional[SubgraphRegistration]
     score: float
     reason: str
-    alternatives: List[tuple[SubgraphRegistration, float]] = field(default_factory=list)
+    alternatives: List[Tuple[SubgraphRegistration, float]] = field(default_factory=list)
     context: Optional[RoutingContext] = None
 
 

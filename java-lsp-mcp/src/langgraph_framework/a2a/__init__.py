@@ -5,7 +5,7 @@ Enables A2A communication for subgraphs using HTTP/gRPC protocols
 with service discovery support.
 """
 
-from typing import Any, Dict, Optional, Set, List, TYPE_CHECKING
+from typing import Any, Dict, Optional, Set, List, TYPE_CHECKING, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime
@@ -464,7 +464,7 @@ class A2AHttpClient:
 def create_a2a_service(host: str = "0.0.0.0",
                       port: int = 8080,
                       service_name: str = "a2a-service",
-                      register_discovery: bool = True) -> tuple[A2AHttpServer, Optional[ServiceEndpoint]]:
+                      register_discovery: bool = True) -> Tuple[A2AHttpServer, Optional[ServiceEndpoint]]:
     """
     Factory function to create an A2A HTTP service.
     

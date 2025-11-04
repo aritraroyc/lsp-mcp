@@ -5,7 +5,7 @@ Provides parent graph orchestration logic for managing state and subgraph
 interactions with error detection and adaptive re-routing.
 """
 
-from typing import Any, Dict, List, Optional, Set, Callable
+from typing import Any, Dict, List, Optional, Set, Callable, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime
@@ -431,7 +431,7 @@ class MainOrchestrator:
 def create_orchestrator(workflow_id: str,
                        tasks: List[Dict[str, Any]],
                        use_adaptive_routing: bool = True,
-                       max_retries: int = 3) -> tuple[MainOrchestrator, OrchestratorState]:
+                       max_retries: int = 3) -> Tuple[MainOrchestrator, OrchestratorState]:
     """
     Factory function to create an orchestrator with initial state.
     
